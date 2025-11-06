@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title th:text="#{login.title}">Entrar</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="form-container">
+        <h2 th:text="#{login.header}">Acessar o Sistema</h2>
+
+        <form th:action="@{/login}" method="post">
+            
+            <div class="form-group">
+                <label for="username" th:text="#{login.label.email}">E-mail</label>
+                <input type="email" id="username" name="username" class="form-control" autofocus th:classappend="${param.error} ? ' is-invalid'">
+                <span th:if="${param.error}" th:text="#{login.error.invalidCredentials}" class="error-message"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="password" th:text="#{login.label.password}">Senha</label>
+                <input type="password" id="password" name="password" class="form-control" th:classappend="${param.error} ? ' is-invalid'">
+                <span th:if="${param.error}" th:text="#{login.error.invalidCredentials}" class="error-message"></span>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary" th:text="#{login.button.enter}">Entrar</button>
+            </div>
+        </form>
+
+        <div class="auth-link">
+            <p><span th:text="#{login.registerPrompt}">Não tem uma conta? </span><a th:href="@{/register}" th:text="#{login.registerLink}">Cadastre-se</a></p>
+        </div>
+
+        <div class="social-login">
+            <p th:text="#{login.socialPrompt}">Ou acesse com:</p>
+
+            <a th:href="@{/oauth2/authorization/github}" class="btn btn-social btn-github">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="fill-current"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.419 2.864 8.169 6.83 9.49.5.092.682-.218.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.37-1.34-3.37-1.34-.454-1.157-1.11-1.464-1.11-1.464-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.087.636-1.334-2.22-.253-4.555-1.111-4.555-4.943 0-1.091.39-1.984 1.03-2.685-.103-.253-.448-1.272.098-2.65 0 0 .84-.27 2.75 1.025A9.574 9.574 0 0112 6.844c.85.004 1.701.114 2.502.332 1.908-1.296 2.748-1.025 2.748-1.025.546 1.378.202 2.397.098 2.65.64.701 1.028 1.594 1.028 2.685 0 3.841-2.338 4.681-4.566 4.935.359.307.678.92.678 1.855 0 1.334-.012 2.41-.012 2.73 0 .267.18.577.688.484C21.136 20.165 24 16.416 24 12c0-5.523-4.477-10-10-10z"/></svg>
+                <span th:text="#{login.button.github}">Entrar com GitHub</span>
+            </a>
+
+            <a th:href="@{/oauth2/authorization/google}" class="btn btn-social btn-google">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="fill-current"><path d="M22.56 12.03c0-.75-.07-1.48-.19-2.19H12v4.16h5.84c-.25 1.48-1.07 2.76-2.31 3.63v2.79h3.59c2.1-1.94 3.3-4.83 3.3-8.39z"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+                <span th:text="#{login.button.google}">Entrar com Google</span>
+            </a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

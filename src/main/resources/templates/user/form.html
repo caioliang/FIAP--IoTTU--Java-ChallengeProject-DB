@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title th:text="${user.id == null} ? #{user.form.title.new} : #{user.form.title.edit}">Formulário de Usuário</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+    <div class="form-container">
+        <h2 th:text="${user.id == null} ? #{user.form.header.new} : #{user.form.header.edit}"></h2>
+
+        <form th:action="${user.id == null} ? @{/users} : @{/users/{id}(id=${user.id})}" th:object="${user}" method="post" id="userForm">
+            <input type="hidden" th:field="*{id}"/>
+            <input type="hidden" name="_method" value="put" th:if="${user.id != null}"/>
+
+            <div class="form-group">
+                <label for="name" th:text="#{user.form.label.name}">Nome</label>
+                <input type="text" id="name" th:field="*{name}" th:errorclass="is-invalid">
+                <span th:errors="*{name}" class="error-message" th:if="${#fields.hasErrors('name')}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="email" th:text="#{user.form.label.email}">Email</label>
+                <input type="email" id="email" th:field="*{email}" th:errorclass="is-invalid">
+                <span th:errors="*{email}" class="error-message" th:if="${#fields.hasErrors('email')}"></span>
+            </div>
+
+            <div class="form-group password-group" th:if="${user.id == null}">
+                <label for="password" th:text="#{user.form.label.password}">Senha</label>
+                <input type="password" id="password" th:field="*{password}" th:errorclass="is-invalid">
+                <span class="password-toggle" data-target="password"></span>
+                <span th:errors="*{password}" class="error-message" th:if="${#fields.hasErrors('password')}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="role" th:text="#{user.form.label.role}">Perfil</label>
+                <select id="role" th:field="*{role}" th:errorclass="is-invalid">
+                    <option value="USER" th:text="#{user.form.option.role.user}">Usuário Padrão (USER)</option>
+                    <option value="ADMIN" th:text="#{user.form.option.role.admin}">Administrador (ADMIN)</option>
+                </select>
+                <span th:errors="*{role}" class="error-message" th:if="${#fields.hasErrors('role')}"></span>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary" th:text="#{user.form.button.save}">Salvar</button>
+                <a th:href="@{/users}" class="btn btn-secondary" th:text="#{user.form.button.cancel}">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<th:block layout:fragment="scripts">
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const toggleButtons = document.querySelectorAll('.password-toggle');
+
+            toggleButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    this.classList.toggle('visible');
+                    const targetId = this.getAttribute('data-target');
+                    const targetInput = document.getElementById(targetId);
+                    if (targetInput) {
+                        targetInput.type = targetInput.type === 'password' ? 'text' : 'password';
+                    }
+                });
+            });
+        });
+    </script>
+</th:block>
+</body>
+</html>

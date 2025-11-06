@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title th:text="#{user.profile.title}">Perfil de Usuário</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="form-container">
+        <h2 th:text="#{user.profile.header(${user.name})}"></h2>
+
+        <div class="profile-details">
+            <div class="profile-item">
+                <strong th:text="#{user.profile.label.id}">ID:</strong>
+                <p th:text="${user.id}"></p>
+            </div>
+            <div class="profile-item">
+                <strong th:text="#{user.profile.label.name}">Nome:</strong>
+                <p th:text="${user.name}"></p>
+            </div>
+            <div class="profile-item">
+                <strong th:text="#{user.profile.label.email}">Email:</strong>
+                <p th:text="${user.email}"></p>
+            </div>
+            <div class="profile-item">
+                <strong th:text="#{user.profile.label.role}">Perfil:</strong>
+                <p th:text="${user.role}"></p>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <a th:href="@{/users/edit/{id}(id=${user.id})}" class="btn btn-primary" th:text="#{user.profile.button.edit}">Editar Perfil</a>
+            <a th:href="@{/users}" class="btn btn-secondary" th:text="#{user.profile.button.back}">Voltar para a Lista</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title th:text="${tag.id == null} ? #{tag.form.title.new} : #{tag.form.title.edit}">Formulário de Etiquetas</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="form-container">
+        <h2 th:text="${tag.id == null} ? #{tag.form.header.new} : #{tag.form.header.edit}"></h2>
+
+        <form th:action="${tag.id == null} ? @{/tags} : @{/tags/{id}(id=${tag.id})}" th:object="${tag}" method="post">
+            <input type="hidden" th:field="*{id}"/>
+            <input type="hidden" name="_method" value="put" th:if="${tag.id != null}"/>
+
+            <div class="form-group">
+                <label for="rfidCode" th:text="#{tag.form.label.rfidCode}">Código RFID</label>
+                <input type="text" id="rfidCode" th:field="*{rfidCode}" th:errorclass="is-invalid">
+                <span th:errors="*{rfidCode}" class="error-message" th:if="${#fields.hasErrors('rfidCode')}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="wifiSsid" th:text="#{tag.form.label.wifiSsid}">SSID Wi-Fi</label>
+                <input type="text" id="wifiSsid" th:field="*{wifiSsid}" th:errorclass="is-invalid">
+                <span th:errors="*{wifiSsid}" class="error-message" th:if="${#fields.hasErrors('wifiSsid')}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="latitude" th:text="#{tag.form.label.latitude}">Latitude</label>
+                <input type="number" step="0.000001" id="latitude" th:field="*{latitude}" th:errorclass="is-invalid">
+                <span th:errors="*{latitude}" class="error-message" th:if="${#fields.hasErrors('latitude')}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="longitude" th:text="#{tag.form.label.longitude}">Longitude</label>
+                <input type="number" step="0.000001" id="longitude" th:field="*{longitude}" th:errorclass="is-invalid">
+                <span th:errors="*{longitude}" class="error-message" th:if="${#fields.hasErrors('longitude')}"></span>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary" th:text="#{tag.form.button.save}">Salvar</button>
+                <a th:href="@{/tags}" class="btn btn-secondary" th:text="#{tag.form.button.cancel}">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

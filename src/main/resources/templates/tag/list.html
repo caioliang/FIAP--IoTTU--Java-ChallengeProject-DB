@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title th:text="#{tag.list.title}">Lista de Etiquetas</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="page-header">
+        <h1 th:text="#{tag.list.header}">Gerenciamento de Etiquetas</h1>
+        <a th:href="@{/tags/new}" class="btn btn-primary" th:text="#{tag.list.button.new}">Nova Etiqueta</a>
+    </div>
+    <div class="table-container">
+        <table class="table">
+            <thead>
+            <tr>
+                <th th:text="#{tag.list.table.header.id}">ID</th>
+                <th th:text="#{tag.list.table.header.rfidCode}">Código RFID</th>
+                <th th:text="#{tag.list.table.header.wifiSsid}">SSID Wi-Fi</th>
+                <th th:text="#{tag.list.table.header.latitude}">Latitude</th>
+                <th th:text="#{tag.list.table.header.longitude}">Longitude</th>
+                <th th:text="#{tag.list.table.header.actions}">Ações</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="tag : ${tags}">
+                <td th:text="${tag.id}"></td>
+                <td th:text="${tag.rfidCode}"></td>
+                <td th:text="${tag.wifiSsid}"></td>
+                <td th:text="${tag.latitude}"></td>
+                <td th:text="${tag.longitude}"></td>
+                <td class="actions">
+                    <a th:href="@{/tags/edit/{id}(id=${tag.id})}" class="btn btn-secondary" th:text="#{tag.list.button.edit}">Editar</a>
+                    <form th:action="@{/tags/{id}(id=${tag.id})}" method="post" style="display:inline;">
+                        <input type="hidden" name="_method" value="delete" />
+                        <button type="submit" class="btn btn-secondary" th:text="#{tag.list.button.delete}" th:onclick="'return confirm(\'' + #{tag.list.confirm.delete} + '\');'">Excluir</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

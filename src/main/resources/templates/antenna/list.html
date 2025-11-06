@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title th:text="#{antenna.list.title}">Lista de Antenas</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="page-header">
+        <h1 th:text="#{antenna.list.header}">Gerenciamento de Antenas</h1>
+        <a th:href="@{/antennas/new}" class="btn btn-primary" th:text="#{antenna.list.button.new}">Nova Antena</a>
+    </div>
+
+    <div class="table-container">
+        <table class="table">
+            <thead>
+            <tr>
+                <th th:text="#{antenna.list.table.header.id}">ID</th>
+                <th th:text="#{antenna.list.table.header.code}">Código</th>
+                <th th:text="#{antenna.list.table.header.latitude}">Latitude</th>
+                <th th:text="#{antenna.list.table.header.longitude}">Longitude</th>
+                <th th:text="#{antenna.list.table.header.yard}">Pátio</th>
+                <th th:text="#{antenna.list.table.header.actions}">Ações</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="antenna : ${antennas}">
+                <td th:text="${antenna.id}"></td>
+                <td th:text="${antenna.code}"></td>
+                <td th:text="${antenna.latitude}"></td>
+                <td th:text="${antenna.longitude}"></td>
+                <td th:text="${antenna.yard.city} + ' (ID: ' + ${antenna.yard.id} + ')'"></td>
+                <td>
+                    <a th:href="@{/antennas/edit/{id}(id=${antenna.id})}" class="btn btn-secondary" th:text="#{antenna.list.button.edit}">Editar</a>
+                    <form th:action="@{/antennas/{id}(id=${antenna.id})}" method="post" style="display:inline;">
+                        <input type="hidden" name="_method" value="delete" />
+                        <button type="submit" class="btn btn-secondary" th:text="#{antenna.list.button.delete}" th:onclick="'return confirm(\'' + #{antenna.list.confirm.delete} + '\');'">Excluir</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

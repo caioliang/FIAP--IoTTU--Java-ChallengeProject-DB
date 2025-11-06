@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title th:text="#{yard.list.title}">Lista de Pátios</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="page-header">
+        <h1 th:text="#{yard.list.header}">Gerenciamento de Pátios</h1>
+        <a th:href="@{/yards/new}" class="btn btn-primary" th:text="#{yard.list.button.new}">Novo Pátio</a>
+    </div>
+
+    <div class="table-container">
+        <table class="table">
+            <thead>
+            <tr>
+                <th th:text="#{yard.list.table.header.id}">ID</th>
+                <th th:text="#{yard.list.table.header.city}">Cidade</th>
+                <th th:text="#{yard.list.table.header.state}">Estado</th>
+                <th th:text="#{yard.list.table.header.capacity}">Capacidade</th>
+                <th th:text="#{yard.list.table.header.responsible}">Responsável</th>
+                <th th:text="#{yard.list.table.header.actions}">Ações</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="yard : ${yards}">
+                <td th:text="${yard.id}"></td>
+                <td th:text="${yard.city}"></td>
+                <td th:text="${yard.state}"></td>
+                <td th:text="${yard.capacity}"></td>
+                <td th:text="${yard.user != null ? yard.user.name : '-'}"></td>
+                <td class="actions">
+                    <a th:href="@{/yards/{id}/map(id=${yard.id})}" class="btn btn-secondary btn-small" th:text="#{yard.list.button.viewMap}">Ver Mapa</a>
+                    <a th:href="@{/yards/edit/{id}(id=${yard.id})}" class="btn btn-secondary btn-small" th:text="#{yard.list.button.edit}">Editar</a>
+                    <form th:action="@{/yards/{id}(id=${yard.id})}" method="post" style="display:inline;">
+                        <input type="hidden" name="_method" value="delete" />
+                        <button type="submit" class="btn btn-secondary" th:text="#{yard.list.button.delete}" th:onclick="'return confirm(\'' + #{yard.list.confirm.delete} + '\');'">Excluir</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

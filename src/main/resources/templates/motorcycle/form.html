@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title th:text="${motorcycle.id == null} ? #{motorcycle.form.title.new} : #{motorcycle.form.title.edit}">Formulário de Motos</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="form-container">
+        <h2 th:text="${motorcycle.id == null} ? #{motorcycle.form.header.new} : #{motorcycle.form.header.edit}"></h2>
+
+        <form th:action="${motorcycle.id == null} ? @{/motorcycles} : @{/motorcycles/{id}(id=${motorcycle.id})}" th:object="${motorcycle}" method="post">
+            <input type="hidden" th:field="*{id}"/>
+            <input type="hidden" name="_method" value="put" th:if="${motorcycle.id != null}"/>
+
+            <div class="form-group">
+                <label for="model" th:text="#{motorcycle.form.label.model}">Modelo</label>
+                <input type="text" id="model" th:field="*{model}" th:errorclass="is-invalid">
+                <span th:errors="*{model}" class="error-message" th:if="${#fields.hasErrors('model')}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="licensePlate" th:text="#{motorcycle.form.label.licensePlate}">Placa</label>
+                <input type="text" id="licensePlate" th:field="*{licensePlate}" th:errorclass="is-invalid">
+                <span th:errors="*{licensePlate}" class="error-message" th:if="${#fields.hasErrors('licensePlate')}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="chassi" th:text="#{motorcycle.form.label.chassi}">Chassi</label>
+                <input type="text" id="chassi" th:field="*{chassi}" th:errorclass="is-invalid">
+                <span th:errors="*{chassi}" class="error-message" th:if="${#fields.hasErrors('chassi')}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="engineNumber" th:text="#{motorcycle.form.label.engineNumber}">Número do Motor</label>
+                <input type="text" id="engineNumber" th:field="*{engineNumber}" th:errorclass="is-invalid">
+                <span th:errors="*{engineNumber}" class="error-message" th:if="${#fields.hasErrors('engineNumber')}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="status" th:text="#{motorcycle.form.label.status}">Status</label>
+                <select id="status" th:field="*{status}" th:errorclass="is-invalid">
+                    <option th:each="status : ${statuses}" th:value="${status.id}" th:text="${status.description}"></option>
+                </select>
+                <span th:errors="*{status}" class="error-message" th:if="${#fields.hasErrors('status')}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="yard" th:text="#{motorcycle.form.label.yard}">Pátio</label>
+                <select id="yard" th:field="*{yard}" th:errorclass="is-invalid">
+                    <option value="" th:text="#{motorcycle.form.option.selectYard}">-- Selecione um Pátio --</option>
+                    <option th:each="yard : ${yards}" th:value="${yard.id}" th:text="${yard.city} + ' (ID: ' + ${yard.id} + ')'"></option>
+                </select>
+                <span th:errors="*{yard}" class="error-message" th:if="${#fields.hasErrors('yard')}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="tag" th:text="#{motorcycle.form.label.tag}">Etiqueta</label>
+                <select id="tag" th:field="*{selectedTagId}" th:errorclass="is-invalid">
+                    <option value="" th:text="#{motorcycle.form.option.selectTag}">-- Selecione uma Etiqueta --</option>
+                    <option th:each="tag : ${availableTags}" th:value="${tag.id}" th:text="${tag.rfidCode}"></option>
+                </select>
+                <span th:errors="*{selectedTagId}" class="error-message" th:if="${#fields.hasErrors('selectedTagId')}"></span>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary" th:text="#{motorcycle.form.button.save}">Salvar</button>
+                <a th:href="@{/motorcycles}" class="btn btn-secondary" th:text="#{motorcycle.form.button.cancel}">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

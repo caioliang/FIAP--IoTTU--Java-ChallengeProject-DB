@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title th:text="#{user.list.title}">Lista de Usuários</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="page-header">
+        <h1 th:text="#{user.list.header}">Gerenciamento de Usuários</h1>
+    </div>
+    <div class="table-container">
+        <table class="table">
+            <thead>
+            <tr>
+                <th th:text="#{user.list.table.header.id}">ID</th>
+                <th th:text="#{user.list.table.header.name}">Nome</th>
+                <th th:text="#{user.list.table.header.email}">Email</th>
+                <th th:text="#{user.list.table.header.role}">Perfil</th>
+                <th th:text="#{user.list.table.header.actions}">Ações</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${users}">
+                <td th:text="${user.id}"></td>
+                <td th:text="${user.name}"></td>
+                <td th:text="${user.email}"></td>
+                <td th:text="${user.role}"></td>
+                <td class="actions">
+                    <a th:href="@{/users/{id}(id=${user.id})}" class="btn btn-secondary btn-small" th:text="#{user.list.button.profile}">Perfil</a>
+                    <a th:href="@{/users/edit/{id}(id=${user.id})}" class="btn btn-secondary btn-small" th:text="#{user.list.button.edit}">Editar</a>
+
+                    <form th:action="@{/users/{id}(id=${user.id})}" th:method="delete" style="display: inline;" th:onsubmit="'return confirm(\'' + #{user.list.confirm.delete} + '\');'">
+                        <button type="submit" class="btn btn-secondary" th:text="#{user.list.button.delete}">Excluir</button>
+                    </form>
+
+                    <form th:if="${user.role == 'USER'}" th:action="@{/users/{id}/promote(id=${user.id})}" method="post" style="display: inline;">
+                        <button type="submit" class="btn btn-secondary" th:text="#{user.list.button.promote}">Promover a Admin</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

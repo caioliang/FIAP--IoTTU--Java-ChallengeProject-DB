@@ -1,0 +1,25 @@
+az provider register --namespace Microsoft.Web
+
+az provider register --namespace Microsoft.Insights
+az provider register --namespace Microsoft.OperationalInsights
+
+az provider register --namespace Microsoft.ServiceLinker
+
+az provider register --namespace Microsoft.Sql
+
+az provider register --namespace Microsoft.DBforPostgreSQL
+
+az extension add --name application-insights
+
+ls -l
+
+chmod +x create-sql-postgres.sh
+
+./create-sql-postgres.sh
+
+
+ls -l
+
+chmod +x deploy-iottu.sh
+
+./deploy-iottu.sh

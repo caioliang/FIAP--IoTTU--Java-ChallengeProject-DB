@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" layout:decorate="~{layout}">
+<head>
+    <title th:text="${yard.id == null} ? #{yard.form.title.new} : #{yard.form.title.edit}">Formulário de Pátio</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="form-container">
+        <h2 th:text="${yard.id == null} ? #{yard.form.header.new} : #{yard.form.header.edit}"></h2>
+
+        <form th:action="${yard.id == null} ? @{/yards} : @{/yards/{id}(id=${yard.id})}" th:object="${yard}" method="post">
+            <input type="hidden" th:field="*{id}"/>
+            <input type="hidden" name="_method" value="put" th:if="${yard.id != null}"/>
+
+            <div class="form-group" sec:authorize="hasRole('ADMIN')">
+                <label for="user" th:text="#{yard.form.label.responsibleUser}">Usuário Responsável</label>
+                <select id="user" th:field="*{user}" th:errorclass="is-invalid">
+                    <option th:each="user : ${users}" th:value="${user.id}" th:text="${user.name}"></option>
+                </select>
+                <span th:errors="*{user}" class="error-message" th:if="${#fields.hasErrors('user')}"></span>
+            </div>
+
+            <input type="hidden" th:field="*{user}" sec:authorize="hasRole('USER')" />
+
+            <div class="form-group">
+                <label for="zipCode" th:text="#{yard.form.label.zipCode}">CEP</label>
+                <input type="text" id="zipCode" th:field="*{zipCode}" th:errorclass="is-invalid">
+                <span th:errors="*{zipCode}" class="error-message" th:if="${#fields.hasErrors('zipCode')}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="city" th:text="#{yard.form.label.city}">Cidade</label>
+                <input type="text" id="city" th:field="*{city}" th:errorclass="is-invalid">
+                <span th:errors="*{city}" class="error-message" th:if="${#fields.hasErrors('city')}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="state" th:text="#{yard.form.label.state}">Estado (UF)</label>
+                <input type="text" id="state" th:field="*{state}" th:errorclass="is-invalid" maxlength="2">
+                <span th:errors="*{state}" class="error-message" th:if="${#fields.hasErrors('state')}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="number" th:text="#{yard.form.label.number}">Número</label>
+                <input type="text" id="number" th:field="*{number}" th:errorclass="is-invalid">
+                <span th:errors="*{number}" class="error-message" th:if="${#fields.hasErrors('number')}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="capacity" th:text="#{yard.form.label.capacity}">Capacidade</label>
+                <input type="number" id="capacity" th:field="*{capacity}" th:errorclass="is-invalid">
+                <span th:errors="*{capacity}" class="error-message" th:if="${#fields.hasErrors('capacity')}"></span>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary" th:text="#{yard.form.button.save}">Salvar</button>
+                <a class="btn btn-secondary" th:href="@{/yards}" th:text="#{yard.form.button.cancel}">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

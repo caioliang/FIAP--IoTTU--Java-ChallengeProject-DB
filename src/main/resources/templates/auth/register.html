@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title th:text="#{register.title}">Cadastre-se</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="form-container">
+        <h2 th:text="#{register.header}">Crie a sua Conta</h2>
+
+        <form th:action="@{/register}" th:object="${user}" method="post">
+
+            <div class="form-group">
+                <label for="name" th:text="#{register.label.fullName}">Nome Completo</label>
+                <input type="text" id="name" th:field="*{name}" class="form-control" th:errorclass="is-invalid">
+                <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error-message"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="email" th:text="#{register.label.email}">E-mail</label>
+                <input type="email" id="email" th:field="*{email}" class="form-control" th:errorclass="is-invalid">
+                <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error-message"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="password" th:text="#{register.label.password}">Senha</label>
+                <input type="password" id="password" th:field="*{password}" class="form-control" th:errorclass="is-invalid">
+                <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error-message"></span>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary" th:text="#{register.button.register}">Cadastrar</button>
+            </div>
+        </form>
+
+        <div class="auth-link">
+            <p><span th:text="#{register.loginPrompt}">Já tem uma conta? </span><a th:href="@{/login}" th:text="#{register.loginLink}">Acesse o perfil</a></p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

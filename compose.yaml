@@ -1,0 +1,10 @@
+services:
+  postgres:
+    image: 'postgres:latest'
+    container_name: postgres_iottu
+    environment:
+      - 'POSTGRES_DB=iottu'
+      - 'POSTGRES_PASSWORD=iottu'
+      - 'POSTGRES_USER=iottu'
+    ports:
+      - '5432:5432'

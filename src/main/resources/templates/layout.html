@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html th:lang="${#locale.language + (#locale.country != null ? '-' + #locale.country : '')}" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">IoTTU</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header class="header">
+    <div class="logo" th:text="#{app.title}">IoTTU</div>
+    <nav class="nav">
+        <a th:href="@{/}" th:text="#{nav.link.home}">Home</a>
+        <a th:href="@{/motorcycles}" th:text="#{nav.link.motorcycles}">Motos</a>
+        <a th:href="@{/yards}" th:text="#{nav.link.yards}">Pátios</a>
+        <a th:href="@{/antennas}" th:text="#{nav.link.antennas}">Antenas</a>
+        <a th:href="@{/tags}" th:text="#{nav.link.tags}">Etiquetas</a>
+
+        <a th:href="@{/users}" sec:authorize="hasRole('ADMIN')" th:text="#{nav.link.users}">Usuários</a>
+
+        <div class="nav-auth">
+            <select id="language-selector" class="language-selector" onchange="changeLanguage()">
+                <option value="pt_BR" th:selected="${#locale.toString() == 'pt_BR'}" th:text="#{language.pt_BR}">Português</option>
+                <option value="en_US" th:selected="${#locale.toString() == 'en_US'}" th:text="#{language.en_US}">Inglês</option>
+            </select>
+
+            <div sec:authorize="isAnonymous()">
+                <a th:href="@{/login}" class="btn btn-primary btn-small" th:text="#{auth.button.login}">Entrar</a>
+            </div>
+
+            <div sec:authorize="isAuthenticated()">
+                <form th:action="@{/logout}" method="post" style="display: inline;">
+                    <button type="submit" class="btn btn-secondary btn-logout btn-small" th:text="#{auth.button.logout}">Desconectar</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<main class="main-content">
+    <div class="content-wrapper">
+        <div layout:fragment="content">
+        </div>
+    </div>
+</main>
+
+<div id="notification-container"></div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const notificationContainer = document.getElementById('notification-container');
+
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.classList.add('notification', type);
+            notification.textContent = message;
+            notificationContainer.appendChild(notification);
+
+            setTimeout(() => {
+                notification.classList.add('fade-out');
+                notification.addEventListener('animationend', () => {
+                    notification.remove();
+                });
+            }, 3000);
+        }
+
+        const successMessage = '[[${successMessage}]]';
+        const failureMessage = '[[${failureMessage}]]';
+
+        if (successMessage && successMessage.trim() !== '') {
+            showNotification(successMessage, 'success');
+        }
+        if (failureMessage && failureMessage.trim() !== '') {
+            showNotification(failureMessage, 'failure');
+        }
+    });
+</script>
+<script>
+    function changeLanguage() {
+        var selectedLanguage = document.getElementById("language-selector").value;
+        window.location.href = "?lang=" + selectedLanguage;
+    }
+</script>
+</body>
+</html>

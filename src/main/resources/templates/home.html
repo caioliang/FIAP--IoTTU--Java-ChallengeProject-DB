@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title>Página Inicial</title>
+</head>
+<body>
+
+    <div layout:fragment="content">
+        <div class="home-container">
+            <h2 th:if="${loggedInUsername}" th:text="'Olá, ' + ${loggedInUsername} + '!'" class="welcome-message"></h2>
+            <h1>Bem-vindo ao IoTTU</h1>
+            <p>Sistema de Gerenciamento de Pátios e Motos.</p>
+            <p>Utilize a navegação acima para acessar as funcionalidades do sistema.</p>
+            <a th:href="@{/motorcycles}" class="btn btn-primary">Ver Motos</a>
+        </div>
+    </div>
+
+</body>
+</html>
