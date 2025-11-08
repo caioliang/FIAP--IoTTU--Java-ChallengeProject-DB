@@ -1,8 +1,18 @@
-# IoTTU - Sistema de Gerenciamento de Pátios de Motocicletas
+# IoTTU - Sistema de Gerenciamento de Pátios de Motocicletas - Version DB ORACLE
 
 ## 📋 Descrição do Projeto
 
 IoTTU é um sistema integrado de gerenciamento de motocicletas em pátios, desenvolvido para a FIAP. O projeto combina tecnologias de IoT (Internet das Coisas) com uma aplicação web robusta e uma API REST para dispositivos móveis. O sistema permite o rastreamento em tempo real de motocicletas através de tags RFID e Wi-Fi, utilizando comunicação MQTT para receber dados de dispositivos IoT.
+
+## 📋 DB-ORACLE - Requisitos:
+- **Conta Oracle Fiap**: Declarar variaveis de ambiente: ORACLE_USER e ORACLE_PASSWORD
+
+## 📋 DB-ORACLE - API REST:
+- **/yards/vagas/{id}**: Vagas disponíveis
+- **/yards/json/{id}}**: Json das motos de um pátio
+- **/yards/relatorio**: Relatorio em JSON dos status das motos de todos os patios cadastrados
+
+
 
 ## 👥 Autores
 
