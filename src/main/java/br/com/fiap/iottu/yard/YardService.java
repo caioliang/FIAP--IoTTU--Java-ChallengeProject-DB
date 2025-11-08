@@ -4,15 +4,18 @@ import br.com.fiap.iottu.antenna.Antenna;
 import br.com.fiap.iottu.antenna.AntennaService;
 import br.com.fiap.iottu.motorcycle.Motorcycle;
 import br.com.fiap.iottu.motorcycle.MotorcycleService;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.sql.*;
 
 @Service
 public class YardService {
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @Autowired
     private YardRepository repository;
@@ -30,13 +33,54 @@ public class YardService {
     public List<Yard> findAll() {
         return repository.findAll();
     }
-    
+
     public List<Yard> findByUserId(Integer userId) {
         return repository.findByUserId(userId);
     }
 
     public Optional<Yard> findById(Integer id) {
         return repository.findById(id);
+    }
+
+    public YardService(YardRepository repository) {
+        this.repository = repository;
+    }
+
+    public Integer calcularVagas(Long idYard) {
+        return repository.calcularVagasDisponiveis(idYard);
+    }
+
+    public String gerarJson(Long idYard) {
+        return repository.gerarJsonYard(idYard);
+    }
+
+  //  public void gerarRelatorio() {repository.gerarRelatorioMotosPorYard();}
+
+    public List<Map<String, Object>> gerarRelatorio() {
+        List<Map<String, Object>> resultados = new ArrayList<>();
+
+        jdbcTemplate.execute((Connection conn) -> {
+            try (CallableStatement stmt = conn.prepareCall("{call PKG_RELATORIOS_PATIO.PRC_RELATORIO_MOTOS_POR_PATIO_OUT(?)}")) {
+                stmt.registerOutParameter(1, oracle.jdbc.OracleTypes.CURSOR);
+                stmt.execute();
+
+                try (ResultSet rs = (ResultSet) stmt.getObject(1)) {
+                    ResultSetMetaData meta = rs.getMetaData();
+                    int columnCount = meta.getColumnCount();
+
+                    while (rs.next()) {
+                        java.util.LinkedHashMap<String, Object> linha = new java.util.LinkedHashMap<>();
+                        for (int i = 1; i <= columnCount; i++) {
+                            linha.put(meta.getColumnLabel(i), rs.getObject(i));
+                        }
+                        resultados.add(linha);
+                    }
+                }
+            }
+            return null;
+        });
+
+        return resultados;
     }
 
     public void validateDuplicate(Yard yard) {
@@ -71,4 +115,4 @@ public class YardService {
 
         return yardMapService.createMap(antennas, motorcycles);
     }
-}
+    }

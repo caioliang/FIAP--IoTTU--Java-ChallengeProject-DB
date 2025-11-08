@@ -13,6 +13,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
+import java.util.Map;
+
 @Controller
 @RequestMapping("/yards")
 public class YardController {
@@ -117,4 +120,24 @@ public class YardController {
 
         return "yard/map";
     }
+
+    @GetMapping("/vagas/{id}")
+    @ResponseBody
+    public String getVagas(@PathVariable("id") Long idYard) {
+        Integer vagas = service.calcularVagas(idYard);
+        return "Vagas disponíveis: " + vagas;
+    }
+
+    @GetMapping("/json/{id}")
+    @ResponseBody
+    public String getJson(@PathVariable("id") Long idYard) {
+        return service.gerarJson(idYard);
+    }
+
+    @GetMapping("/relatorio")
+    @ResponseBody
+    public List<Map<String, Object>> gerarRelatorio() {
+        return service.gerarRelatorio();
+    }
+
 }
